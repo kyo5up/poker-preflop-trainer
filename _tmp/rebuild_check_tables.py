@@ -1,6 +1,6 @@
 """
 Created: 2026-06-13
-Updated: 2026-06-13 16:53
+Updated: 2026-06-13 16:55
 
 yokosawa_range_check.md の各色グループについて、
 ユーザーが手作業で@マークをつけたフル手札テーブルから、
@@ -40,8 +40,12 @@ def build_table(hands_set: set) -> str:
 
 
 def parse_at_marked_table(table_lines: list) -> set:
-    """フル手札テーブルの行から@がついているセルのハンド名集合を返す"""
+    """テーブルの行から@がついているセルのハンド名集合を返す。
+    - セルが「-」+@ の場合: そのセルの行・列からハンド名を算出して追加
+    - セルがハンド名+@ の場合: そのハンド名をそのまま追加
+    """
     hands = set()
+    row_idx = -1
     for line in table_lines:
         line = line.strip()
         if not line.startswith("|"):
@@ -49,12 +53,15 @@ def parse_at_marked_table(table_lines: list) -> set:
         if "---" in line or line.startswith("|       |"):
             continue
         cells = [c.strip() for c in line.split("|")[1:-1]]
+        row_idx += 1
         # cells[0] はランク行ラベル（**A**など）
-        for cell in cells[1:]:
+        for col_idx, cell in enumerate(cells[1:]):
             if "@" in cell:
-                hand = cell.replace("@", "").strip()
-                if hand:
-                    hands.add(hand)
+                content = cell.replace("@", "").strip()
+                if content == "-":
+                    hands.add(hand_label(row_idx, col_idx))
+                elif content:
+                    hands.add(content)
     return hands
 
 

@@ -111,13 +111,14 @@
     
     <!-- 表面 -->
     <div class="card-front" class:red={isRed}>
-      <div class="card-inner-frame">
-        <!-- 左上コーナー -->
-        <div class="corner top-left">
-          <span class="rank">{rank}</span>
-          <span class="suit-mini">{suitMark(suit)}</span>
-        </div>
+      <!-- 左上コーナー (枠の外側) -->
+      <div class="corner top-left">
+        <span class="rank">{rank}</span>
+        <span class="suit-mini">{suitMark(suit)}</span>
+      </div>
 
+      <!-- インナー境界枠 -->
+      <div class="card-main-frame">
         <!-- メインエリア -->
         <div class="main-area">
           {#if layout === 'simple'}
@@ -159,56 +160,82 @@
                 <div class="court-border">
                   {#if rank === 'K'}
                     <svg viewBox="0 0 60 90" class="court-svg">
-                      <circle cx="30" cy="45" r="18" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.25"/>
+                      <circle cx="30" cy="45" r="18" fill="none" stroke="var(--court-gold)" stroke-width="0.75" stroke-dasharray="1 3" opacity="0.4"/>
                       <g transform="translate(0, 0)">
-                        <path d="M22,12 L38,12 L35,22 L30,17 L25,22 Z" fill="currentColor" />
-                        <path d="M20,22 C20,22 23,28 30,28 C37,28 40,22 40,22 L36,36 L24,36 Z" fill="none" stroke="currentColor" stroke-width="1.2" />
-                        <line x1="30" y1="26" x2="30" y2="40" stroke="currentColor" stroke-width="1.5" />
-                        <line x1="27" y1="29" x2="33" y2="29" stroke="currentColor" stroke-width="1.5" />
-                        <path d="M24,36 L15,45 L45,45 L36,36" fill="none" stroke="currentColor" stroke-width="1" opacity="0.8"/>
+                        <path d="M14,35 L12,45 L48,45 L46,35 Z" fill="var(--court-blue)" />
+                        <path d="M12,45 C12,45 10,30 15,22 C20,14 40,14 45,22 C50,30 48,45 48,45 Z" fill="var(--court-red)" opacity="0.9" />
+                        <path d="M24,25 L36,25 L34,35 L26,35 Z" fill="var(--court-gold)" />
+                        <path d="M21,12 L39,12 L36,20 L30,16 L24,20 Z" fill="var(--court-gold)" />
+                        <circle cx="30" cy="12" r="1.5" fill="var(--court-red)" />
+                        <path d="M21,20 C21,20 22,25 30,25 C38,25 39,20 39,20 L36,35 L24,35 Z" fill="none" stroke="var(--court-outline)" stroke-width="1.2" />
+                        <path d="M21,12 L39,12 L36,20 L30,16 L24,20 Z" fill="none" stroke="var(--court-outline)" stroke-width="1.2" />
+                        <line x1="30" y1="21" x2="30" y2="38" stroke="var(--court-outline)" stroke-width="1.5" />
+                        <line x1="26" y1="25" x2="34" y2="25" stroke="var(--court-outline)" stroke-width="1.5" />
+                        <circle cx="30" cy="38" r="1.5" fill="var(--court-gold)" />
                       </g>
                       <g transform="translate(60, 90) rotate(180)">
-                        <path d="M22,12 L38,12 L35,22 L30,17 L25,22 Z" fill="currentColor" />
-                        <path d="M20,22 C20,22 23,28 30,28 C37,28 40,22 40,22 L36,36 L24,36 Z" fill="none" stroke="currentColor" stroke-width="1.2" />
-                        <line x1="30" y1="26" x2="30" y2="40" stroke="currentColor" stroke-width="1.5" />
-                        <line x1="27" y1="29" x2="33" y2="29" stroke="currentColor" stroke-width="1.5" />
-                        <path d="M24,36 L15,45 L45,45 L36,36" fill="none" stroke="currentColor" stroke-width="1" opacity="0.8"/>
+                        <path d="M14,35 L12,45 L48,45 L46,35 Z" fill="var(--court-blue)" />
+                        <path d="M12,45 C12,45 10,30 15,22 C20,14 40,14 45,22 C50,30 48,45 48,45 Z" fill="var(--court-red)" opacity="0.9" />
+                        <path d="M24,25 L36,25 L34,35 L26,35 Z" fill="var(--court-gold)" />
+                        <path d="M21,12 L39,12 L36,20 L30,16 L24,20 Z" fill="var(--court-gold)" />
+                        <circle cx="30" cy="12" r="1.5" fill="var(--court-red)" />
+                        <path d="M21,20 C21,20 22,25 30,25 C38,25 39,20 39,20 L36,35 L24,35 Z" fill="none" stroke="var(--court-outline)" stroke-width="1.2" />
+                        <path d="M21,12 L39,12 L36,20 L30,16 L24,20 Z" fill="none" stroke="var(--court-outline)" stroke-width="1.2" />
+                        <line x1="30" y1="21" x2="30" y2="38" stroke="var(--court-outline)" stroke-width="1.5" />
+                        <line x1="26" y1="25" x2="34" y2="25" stroke="var(--court-outline)" stroke-width="1.5" />
+                        <circle cx="30" cy="38" r="1.5" fill="var(--court-gold)" />
                       </g>
                     </svg>
                   {:else if rank === 'Q'}
                     <svg viewBox="0 0 60 90" class="court-svg">
-                      <circle cx="30" cy="45" r="18" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.25"/>
+                      <circle cx="30" cy="45" r="18" fill="none" stroke="var(--court-gold)" stroke-width="0.75" stroke-dasharray="1 3" opacity="0.4"/>
                       <g transform="translate(0, 0)">
-                        <path d="M25,14 L35,14 L33,20 L30,16 L27,20 Z" fill="currentColor" />
-                        <path d="M22,20 C22,20 22,26 30,26 C38,26 38,20 38,20 L35,36 L25,36 Z" fill="none" stroke="currentColor" stroke-width="1.2" />
-                        <circle cx="30" cy="31" r="3" fill="none" stroke="currentColor" stroke-width="1.2" />
-                        <path d="M28,31 C28,29 32,29 32,31 C32,33 28,33 28,31 Z" fill="currentColor" opacity="0.8"/>
-                        <path d="M25,36 C18,41 18,45 18,45 L42,45 C42,45 42,41 35,36 Z" fill="none" stroke="currentColor" stroke-width="1" opacity="0.8"/>
+                        <path d="M13,45 C13,45 11,28 17,20 C23,12 37,12 43,20 C49,28 47,45 47,45 Z" fill="var(--court-blue)" opacity="0.9" />
+                        <path d="M22,20 L38,20 L35,26 L25,26 Z" fill="var(--court-gold)" />
+                        <path d="M25,26 L35,26 L33,36 L27,36 Z" fill="var(--court-red)" />
+                        <circle cx="30" cy="32" r="3.5" fill="var(--court-red)" />
+                        <circle cx="30" cy="32" r="1.5" fill="var(--court-gold)" />
+                        <path d="M24,13 L36,13 L34,18 L30,15 L26,18 Z" fill="var(--court-gold)" />
+                        <path d="M22,20 C22,20 22,26 30,26 C38,26 38,20 38,20 L35,36 L25,36 Z" fill="none" stroke="var(--court-outline)" stroke-width="1.2" />
+                        <path d="M24,13 L36,13 L34,18 L30,15 L26,18 Z" fill="none" stroke="var(--court-outline)" stroke-width="1.2" />
+                        <path d="M15,45 C15,45 16,36 25,36 L35,36 C44,36 45,45 45,45 Z" fill="none" stroke="var(--court-outline)" stroke-width="1" opacity="0.7"/>
                       </g>
                       <g transform="translate(60, 90) rotate(180)">
-                        <path d="M25,14 L35,14 L33,20 L30,16 L27,20 Z" fill="currentColor" />
-                        <path d="M22,20 C22,20 22,26 30,26 C38,26 38,20 38,20 L35,36 L25,36 Z" fill="none" stroke="currentColor" stroke-width="1.2" />
-                        <circle cx="30" cy="31" r="3" fill="none" stroke="currentColor" stroke-width="1.2" />
-                        <path d="M28,31 C28,29 32,29 32,31 C32,33 28,33 28,31 Z" fill="currentColor" opacity="0.8"/>
-                        <path d="M25,36 C18,41 18,45 18,45 L42,45 C42,45 42,41 35,36 Z" fill="none" stroke="currentColor" stroke-width="1" opacity="0.8"/>
+                        <path d="M13,45 C13,45 11,28 17,20 C23,12 37,12 43,20 C49,28 47,45 47,45 Z" fill="var(--court-blue)" opacity="0.9" />
+                        <path d="M22,20 L38,20 L35,26 L25,26 Z" fill="var(--court-gold)" />
+                        <path d="M25,26 L35,26 L33,36 L27,36 Z" fill="var(--court-red)" />
+                        <circle cx="30" cy="32" r="3.5" fill="var(--court-red)" />
+                        <circle cx="30" cy="32" r="1.5" fill="var(--court-gold)" />
+                        <path d="M24,13 L36,13 L34,18 L30,15 L26,18 Z" fill="var(--court-gold)" />
+                        <path d="M22,20 C22,20 22,26 30,26 C38,26 38,20 38,20 L35,36 L25,36 Z" fill="none" stroke="var(--court-outline)" stroke-width="1.2" />
+                        <path d="M24,13 L36,13 L34,18 L30,15 L26,18 Z" fill="none" stroke="var(--court-outline)" stroke-width="1.2" />
+                        <path d="M15,45 C15,45 16,36 25,36 L35,36 C44,36 45,45 45,45 Z" fill="none" stroke="var(--court-outline)" stroke-width="1" opacity="0.7"/>
                       </g>
                     </svg>
                   {:else if rank === 'J'}
                     <svg viewBox="0 0 60 90" class="court-svg">
-                      <circle cx="30" cy="45" r="18" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.25"/>
+                      <circle cx="30" cy="45" r="18" fill="none" stroke="var(--court-gold)" stroke-width="0.75" stroke-dasharray="1 3" opacity="0.4"/>
                       <g transform="translate(0, 0)">
-                        <path d="M24,15 C24,15 30,8 36,15 L33,21 L27,21 Z" fill="currentColor" />
-                        <path d="M23,21 C23,21 24,27 30,27 C36,27 37,21 37,21 L34,36 L26,36 Z" fill="none" stroke="currentColor" stroke-width="1.2" />
-                        <path d="M19,25 L21,20 L23,25 L21,30 Z" fill="currentColor"/>
-                        <line x1="21" y1="30" x2="21" y2="45" stroke="currentColor" stroke-width="1.2"/>
-                        <path d="M26,36 L17,45 L43,45 L34,36 Z" fill="none" stroke="currentColor" stroke-width="1" opacity="0.8"/>
+                        <path d="M13,45 C13,45 11,28 17,20 C23,12 37,12 43,20 C49,28 47,45 47,45 Z" fill="var(--court-red)" opacity="0.9" />
+                        <path d="M24,25 L36,25 L34,35 L26,35 Z" fill="var(--court-blue)" />
+                        <path d="M23,13 C23,13 30,7 37,13 L35,19 L25,19 Z" fill="var(--court-gold)" />
+                        <circle cx="30" cy="8" r="2.5" fill="var(--court-red)" />
+                        <path d="M22,19 C22,19 23,25 30,25 C37,25 38,19 38,19 L35,35 L25,35 Z" fill="none" stroke="var(--court-outline)" stroke-width="1.2" />
+                        <path d="M23,13 C23,13 30,7 37,13 L35,19 L25,19 Z" fill="none" stroke="var(--court-outline)" stroke-width="1.2" />
+                        <path d="M18,24 L20,18 L22,24 L20,29 Z" fill="var(--court-gold)" />
+                        <path d="M18,24 L20,18 L22,24 L20,29 Z" fill="none" stroke="var(--court-outline)" stroke-width="1.2" />
+                        <line x1="20" y1="29" x2="20" y2="45" stroke="var(--court-outline)" stroke-width="1.5" />
                       </g>
                       <g transform="translate(60, 90) rotate(180)">
-                        <path d="M24,15 C24,15 30,8 36,15 L33,21 L27,21 Z" fill="currentColor" />
-                        <path d="M23,21 C23,21 24,27 30,27 C36,27 37,21 37,21 L34,36 L26,36 Z" fill="none" stroke="currentColor" stroke-width="1.2" />
-                        <path d="M19,25 L21,20 L23,25 L21,30 Z" fill="currentColor"/>
-                        <line x1="21" y1="30" x2="21" y2="45" stroke="currentColor" stroke-width="1.2"/>
-                        <path d="M26,36 L17,45 L43,45 L34,36 Z" fill="none" stroke="currentColor" stroke-width="1" opacity="0.8"/>
+                        <path d="M13,45 C13,45 11,28 17,20 C23,12 37,12 43,20 C49,28 47,45 47,45 Z" fill="var(--court-red)" opacity="0.9" />
+                        <path d="M24,25 L36,25 L34,35 L26,35 Z" fill="var(--court-blue)" />
+                        <path d="M23,13 C23,13 30,7 37,13 L35,19 L25,19 Z" fill="var(--court-gold)" />
+                        <circle cx="30" cy="8" r="2.5" fill="var(--court-red)" />
+                        <path d="M22,19 C22,19 23,25 30,25 C37,25 38,19 38,19 L35,35 L25,35 Z" fill="none" stroke="var(--court-outline)" stroke-width="1.2" />
+                        <path d="M23,13 C23,13 30,7 37,13 L35,19 L25,19 Z" fill="none" stroke="var(--court-outline)" stroke-width="1.2" />
+                        <path d="M18,24 L20,18 L22,24 L20,29 Z" fill="var(--court-gold)" />
+                        <path d="M18,24 L20,18 L22,24 L20,29 Z" fill="none" stroke="var(--court-outline)" stroke-width="1.2" />
+                        <line x1="20" y1="29" x2="20" y2="45" stroke="var(--court-outline)" stroke-width="1.5" />
                       </g>
                     </svg>
                   {/if}
@@ -219,12 +246,12 @@
             {/if}
           {/if}
         </div>
+      </div>
 
-        <!-- 右下コーナー -->
-        <div class="corner bottom-right">
-          <span class="rank">{rank}</span>
-          <span class="suit-mini">{suitMark(suit)}</span>
-        </div>
+      <!-- 右下コーナー (枠の外側) -->
+      <div class="corner bottom-right">
+        <span class="rank">{rank}</span>
+        <span class="suit-mini">{suitMark(suit)}</span>
       </div>
     </div>
   </div>
@@ -286,38 +313,62 @@
       repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.012) 0px, rgba(0, 0, 0, 0.012) 1px, transparent 1px, transparent 2px),
       repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.012) 0px, rgba(0, 0, 0, 0.012) 1px, transparent 1px, transparent 2px);
     background-blend-mode: multiply;
+
+    /* デフォルトの絵札配色カラー */
+    --court-red: #c0392b;
+    --court-blue: #2980b9;
+    --court-gold: #f1c40f;
+    --court-outline: #2c3e50;
   }
 
   .card-front.red {
     color: var(--suit-red, #e74c3c);
   }
 
-  /* インナーフレーム (飾り枠) */
-  .card-inner-frame {
-    width: 100%;
-    height: 100%;
-    border: 1px solid rgba(0, 0, 0, 0.04);
-    border-radius: 10px;
+  /* サイバースキンでの絵札カラー上書き */
+  :global([style*="neon-cyber"]) .card-front {
+    --court-red: #ff007f;
+    --court-blue: #00f0ff;
+    --court-gold: rgba(0, 240, 255, 0.2);
+    --court-outline: #00f0ff;
+  }
+
+  /* ゴールドスキンでの絵札カラー上書き */
+  :global([style*="royal-gold"]) .card-front {
+    --court-red: #b89742;
+    --court-blue: rgba(184, 151, 66, 0.4);
+    --court-gold: #f7e5a9;
+    --court-outline: #b89742;
+  }
+
+  /* インナーフレーム (カード内ベッティングライン・画像に忠実な枠線) */
+  .card-main-frame {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.08); /* デフォルトの薄い枠 */
+    border-radius: 4px;
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 5px;
+    align-items: center;
+    justify-content: center;
     box-sizing: border-box;
-    position: relative;
+    pointer-events: none;
   }
 
   /* スキン切り替え時の枠カラー */
-  :global([style*="neon-cyber"]) .card-inner-frame {
-    border-color: rgba(255, 0, 127, 0.3);
-    box-shadow: inset 0 0 5px rgba(255, 0, 127, 0.15);
+  :global([style*="neon-cyber"]) .card-main-frame {
+    border-color: rgba(0, 240, 255, 0.35);
+    box-shadow: inset 0 0 6px rgba(0, 240, 255, 0.15);
   }
 
-  :global([style*="royal-gold"]) .card-inner-frame {
+  :global([style*="royal-gold"]) .card-main-frame {
     border-color: rgba(184, 151, 66, 0.45);
-    box-shadow: inset 0 0 5px rgba(184, 151, 66, 0.2);
+    box-shadow: inset 0 0 6px rgba(184, 151, 66, 0.2);
   }
 
-  :global([style*="vintage-classic"]) .card-inner-frame {
+  :global([style*="vintage-classic"]) .card-main-frame {
     border-color: rgba(140, 37, 48, 0.25);
   }
 
@@ -366,6 +417,7 @@
 
   /* インデックス（四隅）のレイアウト */
   .corner {
+    position: absolute;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -373,7 +425,14 @@
     z-index: 2;
   }
 
+  .top-left {
+    top: 6px;
+    left: 6px;
+  }
+
   .bottom-right {
+    bottom: 6px;
+    right: 6px;
     transform: rotate(180deg);
   }
 
