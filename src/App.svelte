@@ -4,6 +4,7 @@
   import nineMaxData from './data/open_ranges_9max.json';
   import skinData from './data/skins.json';
   import Card from './lib/components/Card.svelte';
+  import Glossary from './lib/components/Glossary.svelte';
 
   type PushFoldTable = Record<string, { sb_push: string[]; bb_call: string[] }>;
   const huTable = pushFoldData as PushFoldTable;
@@ -21,6 +22,8 @@
     stackRange: { min: number; max: number };
     openSpots: RangeSpot[];
     threeBetSpots: RangeSpot[];
+    callSpots: RangeSpot[];
+    fourBetSpots: RangeSpot[];
   };
   const nineMax = nineMaxData as NineMaxData;
 
@@ -32,7 +35,6 @@
   const skins = skinData.skins as Skin[];
   let currentSkinId = 'classic-dark';
   $: currentSkin = skins.find((skin) => skin.id === currentSkinId) || skins[0];
-  let cardLayout: 'simple' | 'standard' = 'standard';
 
   $: cssVariables = Object.entries(currentSkin.colors)
     .map(([key, value]) => `--${key}: ${value}`)
@@ -54,7 +56,8 @@
     BB: { top: '68%', left: '18%' }
   };
 
-  type ModeId = 'hu' | 'nine-max-open' | 'nine-max-3bet';
+  type ModeId = 'hu' | 'nine-max-open' | 'nine-max-3bet' | 'nine-max-call' | 'nine-max-4bet';
+  type SpotType = 'open' | 'threeBet' | 'call' | 'fourBet' | 'hu';
   type GameMode = {
     id: ModeId;
     name: string;
@@ -63,6 +66,7 @@
     negativeAction: string;
     instruction: string;
     playerCount: number;
+    spotType: SpotType;
   };
 
   const gameModes: GameMode[] = [
@@ -73,7 +77,8 @@
       positiveAction: 'PUSH',
       negativeAction: 'FOLD',
       instruction: 'Hero is SB. Decide whether to push all-in.',
-      playerCount: 2
+      playerCount: 2,
+      spotType: 'hu'
     },
     {
       id: 'nine-max-open',
@@ -82,7 +87,8 @@
       positiveAction: 'OPEN',
       negativeAction: 'FOLD',
       instruction: 'Unopened pot. Decide whether hero should open-raise.',
-      playerCount: 9
+      playerCount: 9,
+      spotType: 'open'
     },
     {
       id: 'nine-max-3bet',
@@ -91,7 +97,28 @@
       positiveAction: '3BET',
       negativeAction: 'FOLD',
       instruction: 'Villain opened first. Decide whether hero should 3bet.',
-      playerCount: 9
+      playerCount: 9,
+      spotType: 'threeBet'
+    },
+    {
+      id: 'nine-max-call',
+      name: '9-MAX CALL',
+      subtitle: '9-handed Call/Fold Decision',
+      positiveAction: 'CALL',
+      negativeAction: 'FOLD',
+      instruction: 'Villain opened first. Decide whether hero should flat-call.',
+      playerCount: 9,
+      spotType: 'call'
+    },
+    {
+      id: 'nine-max-4bet',
+      name: '9-MAX 4BET',
+      subtitle: '9-handed 4bet/Fold Decision',
+      positiveAction: '4BET',
+      negativeAction: 'FOLD',
+      instruction: 'Hero opened, villain 3bet. Decide whether hero should 4bet.',
+      playerCount: 9,
+      spotType: 'fourBet'
     }
   ];
 
@@ -105,6 +132,9 @@
     seats: string[];
     spotLabel: string;
     note: string;
+    spotType: SpotType;
+    rangeTokens: string[];
+    spotKey: string;
   };
 
   let currentModeId: ModeId = 'hu';
@@ -116,6 +146,20 @@
   let total = 0;
   let cardFlipped = false;
   let isAnimating = false;
+  let cardLayout: 'simple' | 'standard' = 'standard';
+  let glossaryOpen = false;
+  let selectedGlossaryTerm: string | null = null;
+
+  function showTerm(term: string) {
+    selectedGlossaryTerm = term;
+    glossaryOpen = true;
+  }
+
+  let editorValue = '';
+  let editorMessage = '';
+
+  type RangeOverrideMap = Record<string, string[]>;
+  let rangeOverrides: RangeOverrideMap = {};
 
   function randomStack(modeId: ModeId): number {
     if (modeId === 'hu') {
@@ -150,7 +194,51 @@
     return { hand: `${high}${low}o`, cards: [`${high}${suits[0]}`, `${low}${suits[1]}`] };
   }
 
+  function expandPairRange(start: string, end: string): string[] {
+    const startIndex = RANKS.indexOf(start);
+    const endIndex = RANKS.indexOf(end);
+    const low = Math.min(startIndex, endIndex);
+    const high = Math.max(startIndex, endIndex);
+    return RANKS.slice(low, high + 1).map((rank) => `${rank}${rank}`);
+  }
+
+  function expandNonPairDash(token: string): string[] {
+    const [start, end] = token.split('-');
+    if (!start || !end || start.length !== 3 || end.length !== 3) return [token];
+
+    const high1 = start[0];
+    const low1 = start[1];
+    const suitedness = start[2];
+    const high2 = end[0];
+    const low2 = end[1];
+
+    if (high1 !== high2 || suitedness !== end[2]) return [token];
+
+    const lowIndex1 = RANKS.indexOf(low1);
+    const lowIndex2 = RANKS.indexOf(low2);
+    const from = Math.min(lowIndex1, lowIndex2);
+    const to = Math.max(lowIndex1, lowIndex2);
+    const highIndex = RANKS.indexOf(high1);
+    const combos: string[] = [];
+
+    for (let index = from; index <= to; index += 1) {
+      if (index < highIndex) {
+        combos.push(`${high1}${RANKS[index]}${suitedness}`);
+      }
+    }
+
+    return combos.length > 0 ? combos : [token];
+  }
+
   function expandRangeToken(token: string): string[] {
+    if (token.includes('-')) {
+      const [start, end] = token.split('-');
+      if (start?.length === 2 && end?.length === 2 && start[0] === start[1] && end[0] === end[1]) {
+        return expandPairRange(start[0], end[0]);
+      }
+      return expandNonPairDash(token);
+    }
+
     if (token.length === 2) {
       return [token];
     }
@@ -193,20 +281,42 @@
     Object.entries(huTable).map(([stack, spot]) => [stack, new Set(spot.sb_push)])
   ) as Record<string, Set<string>>;
 
-  const openRanges = Object.fromEntries(
-    nineMax.openSpots.map((spot) => [spot.position ?? '', buildRange(spot.ranges)])
-  ) as Record<string, Set<string>>;
-
-  const threeBetRanges = Object.fromEntries(
-    nineMax.threeBetSpots.map((spot) => [`${spot.heroPosition}|${spot.villainPosition}`, buildRange(spot.ranges)])
-  ) as Record<string, Set<string>>;
-
-  function pickOpenSpot(): RangeSpot {
-    return nineMax.openSpots[Math.floor(Math.random() * nineMax.openSpots.length)];
+  function spotKeyForType(spotType: SpotType, spot: RangeSpot): string {
+    if (spotType === 'open') return `open:${spot.position}`;
+    if (spotType === 'threeBet') return `threeBet:${spot.heroPosition}:${spot.villainPosition}`;
+    if (spotType === 'call') return `call:${spot.heroPosition}:${spot.villainPosition}`;
+    if (spotType === 'fourBet') return `fourBet:${spot.heroPosition}:${spot.villainPosition}`;
+    return 'hu';
   }
 
-  function pickThreeBetSpot(): RangeSpot {
-    return nineMax.threeBetSpots[Math.floor(Math.random() * nineMax.threeBetSpots.length)];
+  function tokensForSpot(spotType: SpotType, spot: RangeSpot): string[] {
+    const key = spotKeyForType(spotType, spot);
+    return rangeOverrides[key] ?? spot.ranges;
+  }
+
+  function buildSpotMap(spotType: SpotType, spots: RangeSpot[]): Record<string, Set<string>> {
+    return Object.fromEntries(
+      spots.map((spot) => [spotKeyForType(spotType, spot), buildRange(tokensForSpot(spotType, spot))])
+    ) as Record<string, Set<string>>;
+  }
+
+  $: openRanges = buildSpotMap('open', nineMax.openSpots);
+  $: threeBetRanges = buildSpotMap('threeBet', nineMax.threeBetSpots);
+  $: callRanges = buildSpotMap('call', nineMax.callSpots);
+  $: fourBetRanges = buildSpotMap('fourBet', nineMax.fourBetSpots);
+
+  function pickSpot(spots: RangeSpot[]): RangeSpot {
+    return spots[Math.floor(Math.random() * spots.length)];
+  }
+
+  function setEditorForQuiz(nextQuiz: Quiz | null) {
+    if (!nextQuiz || nextQuiz.spotType === 'hu') {
+      editorValue = '';
+      editorMessage = '';
+      return;
+    }
+    editorValue = nextQuiz.rangeTokens.join(', ');
+    editorMessage = '';
   }
 
   function nextQuiz() {
@@ -215,45 +325,63 @@
 
     const stack = randomStack(currentModeId);
     const { hand, cards } = randomHand();
-    let position = 'SB';
-    let villainPosition: string | null = null;
-    let spotLabel = 'HU Push/Fold';
-    let note = 'Short stack heads-up spot.';
-    let shouldAct = false;
-    let seats = ['SB', 'BB'];
+    let next: Quiz;
 
-    if (currentModeId === 'hu') {
-      shouldAct = huRanges[String(stack)]?.has(hand) ?? false;
-    } else if (currentModeId === 'nine-max-open') {
-      const spot = pickOpenSpot();
-      position = spot.position ?? 'CO';
-      spotLabel = spot.label;
-      note = spot.note;
-      seats = [...FULL_RING_SEATS];
-      shouldAct = openRanges[position]?.has(hand) ?? false;
+    if (currentMode.spotType === 'hu') {
+      next = {
+        stack,
+        hand,
+        cards,
+        shouldAct: huRanges[String(stack)]?.has(hand) ?? false,
+        position: 'SB',
+        villainPosition: null,
+        seats: ['SB', 'BB'],
+        spotLabel: 'HU Push/Fold',
+        note: 'Short stack heads-up spot.',
+        spotType: 'hu',
+        rangeTokens: [],
+        spotKey: 'hu'
+      };
     } else {
-      const spot = pickThreeBetSpot();
-      position = spot.heroPosition ?? 'BTN';
-      villainPosition = spot.villainPosition ?? 'CO';
-      spotLabel = spot.label;
-      note = spot.note;
-      seats = [...FULL_RING_SEATS];
-      shouldAct = threeBetRanges[`${position}|${villainPosition}`]?.has(hand) ?? false;
+      const spots =
+        currentMode.spotType === 'open'
+          ? nineMax.openSpots
+          : currentMode.spotType === 'threeBet'
+            ? nineMax.threeBetSpots
+            : currentMode.spotType === 'call'
+              ? nineMax.callSpots
+              : nineMax.fourBetSpots;
+      const spot = pickSpot(spots);
+      const key = spotKeyForType(currentMode.spotType, spot);
+      const tokens = tokensForSpot(currentMode.spotType, spot);
+      const rangeMap =
+        currentMode.spotType === 'open'
+          ? openRanges
+          : currentMode.spotType === 'threeBet'
+            ? threeBetRanges
+            : currentMode.spotType === 'call'
+              ? callRanges
+              : fourBetRanges;
+
+      next = {
+        stack,
+        hand,
+        cards,
+        shouldAct: rangeMap[key]?.has(hand) ?? false,
+        position: spot.position ?? spot.heroPosition ?? 'CO',
+        villainPosition: spot.villainPosition ?? null,
+        seats: [...FULL_RING_SEATS],
+        spotLabel: spot.label,
+        note: spot.note,
+        spotType: currentMode.spotType,
+        rangeTokens: tokens,
+        spotKey: key
+      };
     }
 
-    quiz = {
-      stack,
-      hand,
-      cards,
-      shouldAct,
-      position,
-      villainPosition,
-      seats,
-      spotLabel,
-      note
-    };
-
+    quiz = next;
     result = null;
+    setEditorForQuiz(next);
 
     setTimeout(() => {
       cardFlipped = true;
@@ -285,13 +413,48 @@
 
   function noteForResult(): string {
     if (!quiz) return '';
-    if (currentModeId === 'hu') {
+    if (currentMode.spotType === 'hu') {
       return `At ${quiz.stack}bb, this hand is ${quiz.shouldAct ? 'strong enough to jam' : 'too weak to jam'} from SB.`;
     }
-    if (currentModeId === 'nine-max-open') {
-      return `${quiz.position} is an ${quiz.shouldAct ? 'open' : 'fold'} here. ${quiz.note}`;
+    const verb =
+      currentMode.spotType === 'open'
+        ? 'open'
+        : currentMode.spotType === 'threeBet'
+          ? '3bet'
+          : currentMode.spotType === 'call'
+            ? 'call'
+            : '4bet';
+    const villainText = quiz.villainPosition ? ` versus ${quiz.villainPosition}` : '';
+    return `${quiz.position}${villainText} is a ${quiz.shouldAct ? verb : 'fold'} here. ${quiz.note}`;
+  }
+
+  function applyEditor() {
+    if (!quiz || quiz.spotType === 'hu') return;
+    const tokens = editorValue
+      .split(',')
+      .map((token) => token.trim())
+      .filter(Boolean);
+
+    if (tokens.length === 0) {
+      editorMessage = 'Range is empty.';
+      return;
     }
-    return `${quiz.position} versus ${quiz.villainPosition} is a ${quiz.shouldAct ? '3bet' : 'fold'} here. ${quiz.note}`;
+
+    rangeOverrides = {
+      ...rangeOverrides,
+      [quiz.spotKey]: tokens
+    };
+    editorMessage = 'Applied to this spot.';
+    nextQuiz();
+  }
+
+  function resetEditor() {
+    if (!quiz || quiz.spotType === 'hu') return;
+    const nextOverrides = { ...rangeOverrides };
+    delete nextOverrides[quiz.spotKey];
+    rangeOverrides = nextOverrides;
+    editorMessage = 'Reset to default.';
+    nextQuiz();
   }
 
   onMount(() => {
@@ -300,6 +463,14 @@
 </script>
 
 <main style={cssVariables}>
+  <!-- 用語集トグルボタン -->
+  <button class="glossary-toggle-btn" on:click={() => glossaryOpen = true} title="Open Poker Glossary">
+    <svg viewBox="0 0 24 24" class="glossary-icon">
+      <path d="M12,19.5 C10.05,18.3 7.42,17.5 5,17.5 C3.3,17.5 1.5,18.05 1,18.5 L1,5.5 C1.5,5 3.3,4.5 5,4.5 C7.42,4.5 10.05,5.3 12,6.5 C13.95,5.3 16.58,4.5 19,4.5 C20.7,4.5 22.5,5 23,5.5 L23,18.5 C22.5,18.05 20.7,17.5 19,17.5 C16.58,17.5 13.95,18.3 12,19.5 Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+      <path d="M12,6.5 L12,19.5" stroke="currentColor" stroke-width="2" />
+    </svg>
+  </button>
+
   <div class="skin-selector">
     <span class="selector-label">THEME:</span>
     <div class="selector-buttons">
@@ -352,7 +523,9 @@
 
   <header>
     <h1>PREFLOP TRAINER</h1>
-    <p class="subtitle">{currentMode.subtitle}</p>
+    <button type="button" class="subtitle term-link term-btn" on:click={() => showTerm('Preflop')}>
+      {currentMode.subtitle}
+    </button>
     <p class="mode-note">{currentMode.instruction}</p>
   </header>
 
@@ -360,24 +533,32 @@
     <div class="quiz-container">
       <div class="top-panels">
         <div class="info-panel">
-          <span class="info-label">STACK SIZE</span>
+          <button type="button" class="info-label term-link term-btn" on:click={() => showTerm('Stack')}>
+            STACK SIZE
+          </button>
           <span class="stack-value">{quiz.stack} <span class="bb">BB</span></span>
         </div>
         <div class="info-panel">
-          <span class="info-label">HERO POSITION</span>
+          <button type="button" class="info-label term-link term-btn" on:click={() => showTerm(quiz?.position ?? '')}>
+            HERO POSITION
+          </button>
           <span class="stack-value">{quiz.position}</span>
         </div>
       </div>
 
       <div class="context-panel">
         <div class="context-item">
-          <span class="context-label">SPOT</span>
+          <button type="button" class="context-label term-link term-btn" on:click={() => showTerm(quiz?.spotLabel ?? '')}>
+            SPOT
+          </button>
           <span class="context-value">{quiz.spotLabel}</span>
         </div>
         {#if quiz.villainPosition}
           <div class="context-item">
-            <span class="context-label">VILLAIN</span>
-            <span class="context-value">{quiz.villainPosition} opens</span>
+            <button type="button" class="context-label term-link term-btn" on:click={() => showTerm('Villain')}>
+              VILLAIN
+            </button>
+            <span class="context-value">{quiz.villainPosition}</span>
           </div>
         {/if}
       </div>
@@ -401,6 +582,25 @@
             </div>
           {/each}
         </div>
+      </div>
+
+      <div class="editor-panel">
+        <div class="editor-header">
+          <span class="context-label">RANGE EDITOR</span>
+          <span class="editor-hint">comma separated tokens</span>
+        </div>
+        {#if quiz.spotType === 'hu'}
+          <p class="editor-disabled">Heads-up mode uses fixed push/fold data.</p>
+        {:else}
+          <textarea bind:value={editorValue} rows="3"></textarea>
+          <div class="editor-actions">
+            <button class="mini-btn" on:click={applyEditor}>APPLY</button>
+            <button class="mini-btn secondary" on:click={resetEditor}>RESET</button>
+          </div>
+          {#if editorMessage}
+            <p class="editor-message">{editorMessage}</p>
+          {/if}
+        {/if}
       </div>
 
       {#if result === null}
@@ -457,11 +657,13 @@
       <span class="score-val">{score} / {total}</span>
     </div>
   </footer>
+
+  <Glossary bind:open={glossaryOpen} bind:selectedTerm={selectedGlossaryTerm} />
 </main>
 
 <style>
   main {
-    max-width: 600px;
+    max-width: 680px;
     width: 100%;
     margin: 0 auto;
     padding: 1.5rem 1rem 3rem 1rem;
@@ -499,6 +701,15 @@
     text-transform: uppercase;
   }
 
+  .term-btn {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font: inherit;
+    text-align: inherit;
+  }
+
   .mode-note {
     margin: 0.4rem 0 0;
     font-size: 0.82rem;
@@ -507,17 +718,25 @@
 
   .skin-selector,
   .mode-selector,
-  .layout-selector {
+  .layout-selector,
+  .editor-panel {
     background: rgba(0, 0, 0, 0.25);
     backdrop-filter: blur(10px);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 30px;
-    padding: 4px 8px;
+    border-radius: 20px;
+    padding: 8px 10px;
     display: flex;
     align-items: center;
     gap: 8px;
     margin-bottom: 1rem;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .editor-panel {
+    width: 100%;
+    max-width: 520px;
+    flex-direction: column;
+    align-items: stretch;
   }
 
   .selector-label,
@@ -539,7 +758,8 @@
     justify-content: center;
   }
 
-  .skin-btn {
+  .skin-btn,
+  .mini-btn {
     background: transparent;
     border: none;
     padding: 6px 12px;
@@ -551,7 +771,8 @@
     transition: all 0.3s ease;
   }
 
-  .skin-btn:hover {
+  .skin-btn:hover,
+  .mini-btn:hover {
     color: #fff;
     background: rgba(255, 255, 255, 0.05);
   }
@@ -695,6 +916,43 @@
       opacity: 1;
       transform: translateY(0) rotate(0) scale(1);
     }
+  }
+
+  .editor-header,
+  .editor-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .editor-hint,
+  .editor-message,
+  .editor-disabled {
+    font-size: 0.78rem;
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0;
+  }
+
+  textarea {
+    width: 100%;
+    resize: vertical;
+    min-height: 72px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(0, 0, 0, 0.18);
+    color: #fff;
+    padding: 0.8rem;
+    font: inherit;
+  }
+
+  .mini-btn {
+    background: rgba(255, 255, 255, 0.12);
+    color: #fff;
+  }
+
+  .mini-btn.secondary {
+    background: rgba(255, 255, 255, 0.06);
   }
 
   .action-panel {
@@ -901,6 +1159,76 @@
 
     .score-divider {
       margin: 0 12px;
+    }
+  }
+
+  /* 用語リンクスタイル */
+  .term-link {
+    cursor: pointer;
+    border-bottom: 1px dotted var(--btn-push, #2980b9);
+    color: var(--btn-push, #2980b9);
+    transition: all 0.2s;
+    text-shadow: 0 0 4px rgba(41, 128, 185, 0.2);
+    font-weight: 600;
+  }
+
+  .term-link:hover {
+    color: var(--text-primary, #ffffff);
+    border-bottom-color: var(--text-primary, #ffffff);
+    text-shadow: 0 0 8px rgba(41, 128, 185, 0.6);
+  }
+
+  /* 用語集トグルボタン */
+  .glossary-toggle-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 90;
+    color: var(--text-primary, #ffffff);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .glossary-toggle-btn:hover {
+    transform: scale(1.08);
+    background: var(--btn-push, #2980b9);
+    color: #ffffff;
+    box-shadow: 0 12px 36px rgba(41, 128, 185, 0.4);
+    border-color: transparent;
+  }
+
+  .glossary-icon {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+    transition: transform 0.3s ease;
+  }
+
+  .glossary-toggle-btn:hover .glossary-icon {
+    transform: rotate(5deg);
+  }
+
+  @media (max-width: 768px) {
+    .glossary-toggle-btn {
+      top: 12px;
+      right: 12px;
+      width: 40px;
+      height: 40px;
+    }
+    
+    .glossary-icon {
+      width: 18px;
+      height: 18px;
     }
   }
 </style>

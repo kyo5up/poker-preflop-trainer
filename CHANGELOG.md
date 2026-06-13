@@ -2,6 +2,18 @@
 
 ## [Unreleased]
 
+## [v0.4.2] - 2026-06-13
+
+### Added
+- 9-max preflop mode expansions: call/fold and 4bet/fold spots
+- Range editor UI for per-spot token overrides during local tuning
+- ポーカー用語集（Poker Glossary）機能の追加（スライドインパネルによる動的検索・アコーディオン展開）
+- UI上の各種ポーカー用語（STACK, Positionなど）にクリック可能な用語集リンクを統合
+
+### Changed
+- Expanded 9-max trainer flow with open, 3bet, call, and 4bet spot coverage
+- Kept versioning on patch bump only
+
 ## [v0.4.1] - 2026-06-13
 
 ### Changed
