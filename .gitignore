@@ -1,0 +1,35 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# 環境・シークレット
+.env
+
+# ログ・出力
+logs/
+_logs/
+*.log
+output/
+input/
+
+# 一時ファイル
+*.tmp
+*.bak
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE・ツール
+.claude/
+
+# ローカル専用
+GIT_STATUS.md
