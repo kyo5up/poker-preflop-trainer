@@ -1,0 +1,1354 @@
+{
+  "AA": {
+    "rgb": [
+      208,
+      208,
+      208
+    ],
+    "color": "white_light"
+  },
+  "AKs": {
+    "rgb": [
+      208,
+      208,
+      224
+    ],
+    "color": "white_blue"
+  },
+  "AQs": {
+    "rgb": [
+      240,
+      224,
+      224
+    ],
+    "color": "white_pink"
+  },
+  "AJs": {
+    "rgb": [
+      32,
+      32,
+      48
+    ],
+    "color": "navy_dark"
+  },
+  "ATs": {
+    "rgb": [
+      32,
+      32,
+      32
+    ],
+    "color": "black"
+  },
+  "A9s": {
+    "rgb": [
+      160,
+      32,
+      32
+    ],
+    "color": "red"
+  },
+  "A8s": {
+    "rgb": [
+      160,
+      32,
+      32
+    ],
+    "color": "red"
+  },
+  "A7s": {
+    "rgb": [
+      32,
+      32,
+      32
+    ],
+    "color": "black"
+  },
+  "A6s": {
+    "rgb": [
+      32,
+      32,
+      32
+    ],
+    "color": "black"
+  },
+  "A5s": {
+    "rgb": [
+      32,
+      32,
+      32
+    ],
+    "color": "black"
+  },
+  "A4s": {
+    "rgb": [
+      32,
+      32,
+      32
+    ],
+    "color": "black"
+  },
+  "A3s": {
+    "rgb": [
+      32,
+      32,
+      32
+    ],
+    "color": "black"
+  },
+  "A2s": {
+    "rgb": [
+      32,
+      32,
+      32
+    ],
+    "color": "black"
+  },
+  "AKo": {
+    "rgb": [
+      208,
+      208,
+      224
+    ],
+    "color": "white_blue"
+  },
+  "KK": {
+    "rgb": [
+      208,
+      208,
+      208
+    ],
+    "color": "white_light"
+  },
+  "KQs": {
+    "rgb": [
+      224,
+      224,
+      224
+    ],
+    "color": "white_light"
+  },
+  "KJs": {
+    "rgb": [
+      16,
+      32,
+      64
+    ],
+    "color": "blue_dark"
+  },
+  "KTs": {
+    "rgb": [
+      16,
+      32,
+      64
+    ],
+    "color": "blue_dark"
+  },
+  "K9s": {
+    "rgb": [
+      144,
+      48,
+      32
+    ],
+    "color": "brown_red"
+  },
+  "K8s": {
+    "rgb": [
+      48,
+      128,
+      64
+    ],
+    "color": "green"
+  },
+  "K7s": {
+    "rgb": [
+      64,
+      112,
+      64
+    ],
+    "color": "green"
+  },
+  "K6s": {
+    "rgb": [
+      240,
+      240,
+      240
+    ],
+    "color": "white_light"
+  },
+  "K5s": {
+    "rgb": [
+      240,
+      240,
+      240
+    ],
+    "color": "white_light"
+  },
+  "K4s": {
+    "rgb": [
+      64,
+      128,
+      64
+    ],
+    "color": "green"
+  },
+  "K3s": {
+    "rgb": [
+      240,
+      240,
+      240
+    ],
+    "color": "white_light"
+  },
+  "K2s": {
+    "rgb": [
+      240,
+      240,
+      240
+    ],
+    "color": "white_light"
+  },
+  "AQo": {
+    "rgb": [
+      208,
+      144,
+      64
+    ],
+    "color": "orange"
+  },
+  "KQo": {
+    "rgb": [
+      208,
+      208,
+      224
+    ],
+    "color": "white_blue"
+  },
+  "QQ": {
+    "rgb": [
+      224,
+      224,
+      224
+    ],
+    "color": "white_light"
+  },
+  "QJs": {
+    "rgb": [
+      48,
+      48,
+      64
+    ],
+    "color": "unknown_(48, 48, 64)"
+  },
+  "QTs": {
+    "rgb": [
+      48,
+      48,
+      64
+    ],
+    "color": "unknown_(48, 48, 64)"
+  },
+  "Q9s": {
+    "rgb": [
+      224,
+      160,
+      64
+    ],
+    "color": "orange_yellow"
+  },
+  "Q8s": {
+    "rgb": [
+      48,
+      96,
+      64
+    ],
+    "color": "green_dark"
+  },
+  "Q7s": {
+    "rgb": [
+      48,
+      96,
+      64
+    ],
+    "color": "green_dark"
+  },
+  "Q6s": {
+    "rgb": [
+      240,
+      240,
+      240
+    ],
+    "color": "white_light"
+  },
+  "Q5s": {
+    "rgb": [
+      240,
+      240,
+      240
+    ],
+    "color": "white_light"
+  },
+  "Q4s": {
+    "rgb": [
+      160,
+      160,
+      160
+    ],
+    "color": "gray"
+  },
+  "Q3s": {
+    "rgb": [
+      160,
+      160,
+      160
+    ],
+    "color": "gray"
+  },
+  "Q2s": {
+    "rgb": [
+      176,
+      160,
+      176
+    ],
+    "color": "gray_purple"
+  },
+  "AJo": {
+    "rgb": [
+      208,
+      128,
+      64
+    ],
+    "color": "orange"
+  },
+  "KJo": {
+    "rgb": [
+      208,
+      208,
+      208
+    ],
+    "color": "white_light"
+  },
+  "QJo": {
+    "rgb": [
+      224,
+      224,
+      224
+    ],
+    "color": "white_light"
+  },
+  "JJ": {
+    "rgb": [
+      112,
+      64,
+      32
+    ],
+    "color": "brown"
+  },
+  "JTs": {
+    "rgb": [
+      48,
+      128,
+      64
+    ],
+    "color": "green"
+  },
+  "J9s": {
+    "rgb": [
+      160,
+      32,
+      32
+    ],
+    "color": "red"
+  },
+  "J8s": {
+    "rgb": [
+      80,
+      80,
+      32
+    ],
+    "color": "olive"
+  },
+  "J7s": {
+    "rgb": [
+      32,
+      80,
+      96
+    ],
+    "color": "teal_dark"
+  },
+  "J6s": {
+    "rgb": [
+      64,
+      64,
+      64
+    ],
+    "color": "dark_gray"
+  },
+  "J5s": {
+    "rgb": [
+      96,
+      48,
+      112
+    ],
+    "color": "purple_dark"
+  },
+  "J4s": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "J3s": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "J2s": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "ATo": {
+    "rgb": [
+      208,
+      128,
+      64
+    ],
+    "color": "orange"
+  },
+  "KTo": {
+    "rgb": [
+      208,
+      208,
+      224
+    ],
+    "color": "white_blue"
+  },
+  "QTo": {
+    "rgb": [
+      224,
+      224,
+      224
+    ],
+    "color": "white_light"
+  },
+  "JTo": {
+    "rgb": [
+      64,
+      112,
+      64
+    ],
+    "color": "green"
+  },
+  "TT": {
+    "rgb": [
+      80,
+      144,
+      160
+    ],
+    "color": "teal"
+  },
+  "T9s": {
+    "rgb": [
+      80,
+      144,
+      160
+    ],
+    "color": "teal"
+  },
+  "T8s": {
+    "rgb": [
+      160,
+      32,
+      32
+    ],
+    "color": "red"
+  },
+  "T7s": {
+    "rgb": [
+      64,
+      112,
+      80
+    ],
+    "color": "green"
+  },
+  "T6s": {
+    "rgb": [
+      160,
+      160,
+      160
+    ],
+    "color": "gray"
+  },
+  "T5s": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "T4s": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "T3s": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "T2s": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "A9o": {
+    "rgb": [
+      208,
+      128,
+      64
+    ],
+    "color": "orange"
+  },
+  "K9o": {
+    "rgb": [
+      208,
+      208,
+      208
+    ],
+    "color": "white_light"
+  },
+  "Q9o": {
+    "rgb": [
+      208,
+      208,
+      208
+    ],
+    "color": "white_light"
+  },
+  "J9o": {
+    "rgb": [
+      64,
+      144,
+      192
+    ],
+    "color": "blue"
+  },
+  "T9o": {
+    "rgb": [
+      240,
+      240,
+      240
+    ],
+    "color": "white_light"
+  },
+  "99": {
+    "rgb": [
+      240,
+      240,
+      240
+    ],
+    "color": "white_light"
+  },
+  "98s": {
+    "rgb": [
+      240,
+      240,
+      240
+    ],
+    "color": "white_light"
+  },
+  "97s": {
+    "rgb": [
+      160,
+      32,
+      32
+    ],
+    "color": "red"
+  },
+  "96s": {
+    "rgb": [
+      240,
+      240,
+      240
+    ],
+    "color": "white_light"
+  },
+  "95s": {
+    "rgb": [
+      192,
+      16,
+      240
+    ],
+    "color": "magenta"
+  },
+  "94s": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "93s": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "92s": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "A8o": {
+    "rgb": [
+      208,
+      128,
+      64
+    ],
+    "color": "orange"
+  },
+  "K8o": {
+    "rgb": [
+      208,
+      208,
+      224
+    ],
+    "color": "white_blue"
+  },
+  "Q8o": {
+    "rgb": [
+      224,
+      224,
+      224
+    ],
+    "color": "white_light"
+  },
+  "J8o": {
+    "rgb": [
+      240,
+      240,
+      240
+    ],
+    "color": "white_light"
+  },
+  "T8o": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "98o": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "88": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "87s": {
+    "rgb": [
+      176,
+      16,
+      224
+    ],
+    "color": "magenta"
+  },
+  "86s": {
+    "rgb": [
+      240,
+      240,
+      240
+    ],
+    "color": "white_light"
+  },
+  "85s": {
+    "rgb": [
+      192,
+      16,
+      240
+    ],
+    "color": "magenta"
+  },
+  "84s": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "83s": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "82s": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "A7o": {
+    "rgb": [
+      208,
+      128,
+      64
+    ],
+    "color": "orange"
+  },
+  "K7o": {
+    "rgb": [
+      208,
+      208,
+      224
+    ],
+    "color": "white_blue"
+  },
+  "Q7o": {
+    "rgb": [
+      224,
+      224,
+      224
+    ],
+    "color": "white_light"
+  },
+  "J7o": {
+    "rgb": [
+      240,
+      240,
+      240
+    ],
+    "color": "white_light"
+  },
+  "T7o": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "97o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "87o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "77": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "76s": {
+    "rgb": [
+      224,
+      160,
+      64
+    ],
+    "color": "orange_yellow"
+  },
+  "75s": {
+    "rgb": [
+      240,
+      240,
+      240
+    ],
+    "color": "white_light"
+  },
+  "74s": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "73s": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "72s": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "A6o": {
+    "rgb": [
+      208,
+      128,
+      64
+    ],
+    "color": "orange"
+  },
+  "K6o": {
+    "rgb": [
+      208,
+      208,
+      208
+    ],
+    "color": "white_light"
+  },
+  "Q6o": {
+    "rgb": [
+      208,
+      208,
+      208
+    ],
+    "color": "white_light"
+  },
+  "J6o": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "T6o": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "96o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "86o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "76o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "66": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "65s": {
+    "rgb": [
+      48,
+      128,
+      64
+    ],
+    "color": "green"
+  },
+  "64s": {
+    "rgb": [
+      240,
+      240,
+      240
+    ],
+    "color": "white_light"
+  },
+  "63s": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "62s": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "A5o": {
+    "rgb": [
+      208,
+      128,
+      64
+    ],
+    "color": "orange"
+  },
+  "K5o": {
+    "rgb": [
+      240,
+      240,
+      240
+    ],
+    "color": "white_light"
+  },
+  "Q5o": {
+    "rgb": [
+      224,
+      224,
+      224
+    ],
+    "color": "white_light"
+  },
+  "J5o": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "T5o": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "95o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "85o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "75o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "65o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "55": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "54s": {
+    "rgb": [
+      48,
+      128,
+      64
+    ],
+    "color": "green"
+  },
+  "53s": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "52s": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "A4o": {
+    "rgb": [
+      208,
+      128,
+      48
+    ],
+    "color": "orange"
+  },
+  "K4o": {
+    "rgb": [
+      208,
+      208,
+      208
+    ],
+    "color": "white_light"
+  },
+  "Q4o": {
+    "rgb": [
+      224,
+      224,
+      224
+    ],
+    "color": "white_light"
+  },
+  "J4o": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "T4o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "94o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "84o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "74o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "64o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "54o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "44": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "43s": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "42s": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "A3o": {
+    "rgb": [
+      16,
+      0,
+      0
+    ],
+    "color": "black"
+  },
+  "K3o": {
+    "rgb": [
+      208,
+      208,
+      208
+    ],
+    "color": "white_light"
+  },
+  "Q3o": {
+    "rgb": [
+      224,
+      224,
+      224
+    ],
+    "color": "white_light"
+  },
+  "J3o": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "T3o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "93o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "83o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "73o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "63o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "53o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "43o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "33": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "32s": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "A2o": {
+    "rgb": [
+      208,
+      208,
+      208
+    ],
+    "color": "white_light"
+  },
+  "K2o": {
+    "rgb": [
+      208,
+      208,
+      208
+    ],
+    "color": "white_light"
+  },
+  "Q2o": {
+    "rgb": [
+      208,
+      208,
+      208
+    ],
+    "color": "white_light"
+  },
+  "J2o": {
+    "rgb": [
+      240,
+      160,
+      224
+    ],
+    "color": "pink"
+  },
+  "T2o": {
+    "rgb": [
+      64,
+      64,
+      64
+    ],
+    "color": "dark_gray"
+  },
+  "92o": {
+    "rgb": [
+      64,
+      64,
+      64
+    ],
+    "color": "dark_gray"
+  },
+  "82o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "72o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "62o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "52o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "42o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "32o": {
+    "rgb": [
+      128,
+      128,
+      128
+    ],
+    "color": "gray_mid"
+  },
+  "22": {
+    "rgb": [
+      64,
+      144,
+      192
+    ],
+    "color": "blue"
+  }
+}

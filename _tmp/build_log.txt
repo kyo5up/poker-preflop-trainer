@@ -1,0 +1,26 @@
+出力完了: C:\Users\14506928\Projects\12_games\poker-preflop-trainer\_tmp\..\_materials\yokosawa_range_raw.json
+gray_mid: 43ハンド
+white_light: 37ハンド
+pink: 24ハンド
+orange: 9ハンド
+black: 8ハンド
+green: 8ハンド
+white_blue: 6ハンド
+red: 5ハンド
+gray: 3ハンド
+dark_gray: 3ハンド
+magenta: 3ハンド
+blue_dark: 2ハンド
+unknown_(48, 48, 64): 2ハンド
+orange_yellow: 2ハンド
+green_dark: 2ハンド
+teal: 2ハンド
+blue: 2ハンド
+white_pink: 1ハンド
+navy_dark: 1ハンド
+brown_red: 1ハンド
+gray_purple: 1ハンド
+brown: 1ハンド
+olive: 1ハンド
+teal_dark: 1ハンド
+purple_dark: 1ハンド
