@@ -89,5 +89,51 @@
       "note": "最後尾から守れる席。value と suited bluff を混ぜやすく、BTN への対抗手段になる。",
       "ranges": ["99+", "ATs+", "KQs", "A5s", "A4s", "KJs", "QJs", "JTs", "AQo+", "AKo"]
     }
+  ],
+  "callSpots": [
+    {
+      "heroPosition": "BB",
+      "villainPosition": "BTN",
+      "label": "BB vs BTN CALL",
+      "note": "BB はポットオッズが良い。3bet しない suited hand や broadway を広く defend できる。",
+      "ranges": ["22-88", "A2s-AJs", "K5s-KQs", "Q7s-QJs", "J7s-JTs", "T7s-T9s", "97s+", "86s+", "75s+", "64s+", "54s", "A8o-AQo", "K9o-KQo", "Q9o-QJo", "J9o-JTo", "T9o"]
+    },
+    {
+      "heroPosition": "BB",
+      "villainPosition": "CO",
+      "label": "BB vs CO CALL",
+      "note": "CO open には BTN より少し固く守る。offsuit は絞り、suited と broadway を中心に残す。",
+      "ranges": ["22-77", "A2s-ATs", "K7s-KQs", "Q8s-QJs", "J8s-JTs", "T8s-T9s", "98s", "87s", "76s", "65s", "A9o-AQo", "KTo-KQo", "QTo-QJo", "JTo"]
+    },
+    {
+      "heroPosition": "BTN",
+      "villainPosition": "CO",
+      "label": "BTN vs CO CALL",
+      "note": "ポジションあり。3bet しない中強度 suited hand をコールに回しやすい。",
+      "ranges": ["22-99", "A2s-ATs", "K9s-KJs", "Q9s-QJs", "J9s-JTs", "T9s", "98s", "87s", "AJo-AQo", "KQo"]
+    }
+  ],
+  "fourBetSpots": [
+    {
+      "heroPosition": "CO",
+      "villainPosition": "BTN",
+      "label": "CO vs BTN 4BET",
+      "note": "BTN の 3bet に対して、value を中心に少量の A5s/A4s を混ぜる典型形。",
+      "ranges": ["QQ+", "AKs", "A5s", "A4s", "AKo"]
+    },
+    {
+      "heroPosition": "BTN",
+      "villainPosition": "SB",
+      "label": "BTN vs SB 4BET",
+      "note": "SB の aggressive 3bet に対し、ポジション込みで少しだけ bluff を混ぜられる。",
+      "ranges": ["QQ+", "AKs", "A5s", "AKo"]
+    },
+    {
+      "heroPosition": "BTN",
+      "villainPosition": "BB",
+      "label": "BTN vs BB 4BET",
+      "note": "BB の広め 3bet へ反撃する代表 spot。value + wheel ace bluff。",
+      "ranges": ["QQ+", "AKs", "A5s", "A4s", "AKo"]
+    }
   ]
 }
