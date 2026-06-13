@@ -96,6 +96,7 @@
   .card-front {
     background: var(--bg-card-front, #ffffff);
     color: var(--suit-black, #2c3e50);
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.02), inset 0 0 0 4px rgba(0, 0, 0, 0.01);
   }
 
   .card-front.red {
@@ -109,16 +110,40 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid rgba(255, 255, 255, 0.15);
+    border: 5px solid #faf6eb; /* クラシックな太めの白枠 */
   }
 
   .pattern {
-    width: calc(100% - 6px);
-    height: calc(100% - 6px);
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 0);
-    background-size: 8px 8px;
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: 
+      radial-gradient(rgba(255, 255, 255, 0.08) 15%, transparent 16%),
+      radial-gradient(rgba(255, 255, 255, 0.08) 15%, transparent 16%),
+      linear-gradient(45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.03) 75%),
+      linear-gradient(-45deg, rgba(255, 255, 255, 0.03) 25%, transparent 25%, transparent 75%, rgba(255, 255, 255, 0.03) 75%);
+    background-size: 6px 6px, 6px 6px, 12px 12px, 12px 12px;
+    background-position: 0 0, 3px 3px, 0 0, 0 0;
+  }
+
+  .pattern::before {
+    content: '♠';
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.12);
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+    width: 26px;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.05);
   }
 
   /* コーナーのスート記号 */

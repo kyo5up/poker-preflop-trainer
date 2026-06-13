@@ -50,6 +50,23 @@
         "btn-push": "#d4af37",
         "btn-fold": "#555555"
       }
+    },
+    {
+      "id": "vintage-classic",
+      "name": "ヴィンテージ",
+      "colors": {
+        "bg-table": "radial-gradient(circle at center, #ece5ce 0%, #c5b897 100%)",
+        "bg-card-front": "#faf6eb",
+        "bg-card-back": "radial-gradient(circle, #8c2530 0%, #63141c 100%)",
+        "card-shadow": "0 6px 16px rgba(90, 80, 60, 0.35)",
+        "suit-red": "#b81d24",
+        "suit-black": "#1c1c1c",
+        "text-primary": "#4a3b2c",
+        "panel-bg": "rgba(235, 228, 209, 0.85)",
+        "panel-border": "1px solid rgba(140, 37, 48, 0.25)",
+        "btn-push": "#8c2530",
+        "btn-fold": "#6b5e52"
+      }
     }
   ]
 }
