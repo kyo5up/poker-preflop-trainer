@@ -2,6 +2,12 @@
 
 ## [Unreleased]
 
+## [v0.2.1] - 2026-06-13
+
+### Added
+- GitHub Pagesへの自動デプロイ用GitHub Actionsワークフロー（`.github/workflows/deploy.yml`）を追加
+- `vite.config.ts` に GitHub Pages用の `base` パス設定を追加
+
 ## [v0.2.0] - 2026-06-13
 
 ### Added
