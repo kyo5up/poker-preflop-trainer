@@ -3,13 +3,15 @@ project_type: [web]
 status: active
 tags: []
 created: 2026-06-13T00:00:00
-Updated: 2026-06-13 14:52
+Updated: 2026-06-13 16:00
 ---
 
 # poker-preflop-trainer
 
+**Live Demo**: [https://kyo5up.github.io/poker-preflop-trainer/](https://kyo5up.github.io/poker-preflop-trainer/)
+
 Created: 2026-06-13
-Updated: 2026-06-13 14:52
+Updated: 2026-06-13 16:00
 
 ## 概要
 （何をするか・日本語55文字以内）
