@@ -1046,17 +1046,81 @@
 
   .table-felt {
     width: 100%;
-    max-width: 420px;
-    aspect-ratio: 1.2 / 1;
-    background: rgba(0, 0, 0, 0.15);
-    border-radius: 100px;
-    border: 3px solid rgba(255, 255, 255, 0.05);
-    box-shadow: inset 0 10px 30px rgba(0, 0, 0, 0.5), 0 4px 20px rgba(0, 0, 0, 0.2);
+    max-width: 440px;
+    aspect-ratio: 1.25 / 1;
+    background: var(--bg-table);
+    border-radius: 120px;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem;
-    position: relative;
+    padding: 1.5rem;
+    
+    /* Padded Leather/Wood Rail (立体的な外枠クッション) */
+    border: 10px solid #14161f;
+    box-shadow: 
+      /* 外側へのドロップシャドウ */
+      0 20px 50px rgba(0, 0, 0, 0.65), 
+      /* クッションのハイライトと影 */
+      inset 0 4px 10px rgba(255, 255, 255, 0.15),
+      inset 0 -4px 10px rgba(0, 0, 0, 0.6),
+      /* フェルト部分の沈み込みを表現するインナーシャドウ */
+      inset 0 12px 40px rgba(0, 0, 0, 0.95);
+      
+    overflow: visible;
+    transition: background 0.5s ease;
+  }
+
+  /* ベッティングライン (Betting Line) */
+  .table-felt::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    right: 15px;
+    bottom: 15px;
+    border-radius: 105px;
+    border: 1px dashed rgba(255, 255, 255, 0.12);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ネオン・サイバー時のベッティングライン (発光) */
+  :global([style*="neon-cyber"]) .table-felt::before {
+    border: 1px solid rgba(255, 0, 127, 0.35);
+    box-shadow: 0 0 8px rgba(255, 0, 127, 0.2), inset 0 0 8px rgba(255, 0, 127, 0.2);
+  }
+
+  /* ロイヤル・ゴールド時のベッティングライン (金色) */
+  :global([style*="royal-gold"]) .table-felt::before {
+    border: 1px dashed rgba(184, 151, 66, 0.4);
+  }
+
+  /* ヴィンテージ時のベッティングライン */
+  :global([style*="vintage-classic"]) .table-felt::before {
+    border: 1px solid rgba(140, 37, 48, 0.2);
+  }
+
+  /* フェルト中央の透かしロゴマーク */
+  .table-felt::after {
+    content: 'PREFLOP TRAINER';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    color: rgba(255, 255, 255, 0.035);
+    pointer-events: none;
+    z-index: 0;
+    text-transform: uppercase;
+  }
+  
+  :global([style*="neon-cyber"]) .table-felt::after {
+    color: rgba(0, 240, 255, 0.035);
+    text-shadow: 0 0 8px rgba(0, 240, 255, 0.05);
   }
 
   .seat-map {
