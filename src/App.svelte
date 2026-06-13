@@ -150,6 +150,18 @@
   let glossaryOpen = false;
   let selectedGlossaryTerm: string | null = null;
 
+  // アクションシーケンス演出用の状態
+  let seatActions: Record<string, string> = {};
+  let activeActionSeat: string | null = null;
+  let isActionAnimating = false;
+  let actionTimer: any = null;
+
+  function isCardRed(cardStr: string): boolean {
+    if (!cardStr) return false;
+    const suit = cardStr.slice(-1);
+    return suit === 'h' || suit === 'd';
+  }
+
   function showTerm(term: string) {
     selectedGlossaryTerm = term;
     glossaryOpen = true;
@@ -383,10 +395,169 @@
     result = null;
     setEditorForQuiz(next);
 
-    setTimeout(() => {
-      cardFlipped = true;
-      isAnimating = false;
-    }, 450);
+    startActionSequence();
+  }
+
+  function startActionSequence() {
+    if (!quiz) return;
+    
+    if (actionTimer) {
+      clearTimeout(actionTimer);
+      actionTimer = null;
+    }
+    
+    isActionAnimating = true;
+    seatActions = {};
+    activeActionSeat = null;
+    
+    const order = currentModeId === 'hu' ? ['SB', 'BB'] : [...FULL_RING_SEATS];
+    const queue: { seat: string; action: string }[] = [];
+    
+    if (currentModeId === 'hu') {
+      queue.push({ seat: 'SB', action: 'DECIDING' });
+    } else {
+      const heroSeat = quiz.position;
+      const villainSeat = quiz.villainPosition;
+      const spotType = currentMode.spotType;
+      
+      if (spotType === 'fourBet') {
+        const heroIdx = order.indexOf(heroSeat);
+        const villainIdx = order.indexOf(villainSeat as any);
+        
+        let currentIdx = 0;
+        while (currentIdx < heroIdx) {
+          queue.push({ seat: order[currentIdx], action: 'FOLD' });
+          currentIdx++;
+        }
+        queue.push({ seat: heroSeat, action: 'OPEN' });
+        currentIdx++;
+        
+        if (heroIdx < villainIdx) {
+          while (currentIdx < villainIdx) {
+            queue.push({ seat: order[currentIdx], action: 'FOLD' });
+            currentIdx++;
+          }
+          queue.push({ seat: order[villainIdx], action: '3BET' });
+          currentIdx++;
+          
+          while (currentIdx < order.length) {
+            queue.push({ seat: order[currentIdx], action: 'FOLD' });
+            currentIdx++;
+          }
+          queue.push({ seat: heroSeat, action: 'DECIDING' });
+        } else {
+          while (currentIdx < order.length) {
+            queue.push({ seat: order[currentIdx], action: 'FOLD' });
+            currentIdx++;
+          }
+          
+          let idx2 = 0;
+          while (idx2 < villainIdx) {
+            queue.push({ seat: order[idx2], action: 'FOLD' });
+            idx2++;
+          }
+          queue.push({ seat: order[villainIdx], action: '3BET' });
+          idx2++;
+          
+          while (idx2 < heroIdx) {
+            queue.push({ seat: order[idx2], action: 'FOLD' });
+            idx2++;
+          }
+          queue.push({ seat: heroSeat, action: 'DECIDING' });
+        }
+      } else {
+        for (const seat of order) {
+          if (seat === heroSeat) {
+            queue.push({ seat, action: 'DECIDING' });
+            break;
+          }
+          if (spotType === 'open') {
+            queue.push({ seat, action: 'FOLD' });
+          } else {
+            if (seat === villainSeat) {
+              queue.push({ seat, action: 'OPEN' });
+            } else {
+              queue.push({ seat, action: 'FOLD' });
+            }
+          }
+        }
+      }
+    }
+    
+    let step = 0;
+    function runNextStep() {
+      if (!isActionAnimating) return;
+      
+      if (step < queue.length) {
+        const item = queue[step];
+        activeActionSeat = item.seat;
+        seatActions = {
+          ...seatActions,
+          [item.seat]: item.action
+        };
+        step++;
+        const delay = item.action === 'FOLD' ? 220 : 600;
+        actionTimer = setTimeout(runNextStep, delay) as any;
+      } else {
+        activeActionSeat = quiz?.position ?? null;
+        isActionAnimating = false;
+        isAnimating = false;
+        cardFlipped = true;
+      }
+    }
+    runNextStep();
+  }
+
+  function skipActionSequence() {
+    if (!isActionAnimating || !quiz) return;
+    
+    if (actionTimer) {
+      clearTimeout(actionTimer);
+      actionTimer = null;
+    }
+    
+    const order = currentModeId === 'hu' ? ['SB', 'BB'] : [...FULL_RING_SEATS];
+    const heroSeat = quiz.position;
+    const villainSeat = quiz.villainPosition;
+    const spotType = currentMode.spotType;
+    
+    const finalActions: Record<string, string> = {};
+    let passedHero = false;
+    
+    if (currentModeId === 'hu') {
+      finalActions['SB'] = 'DECIDING';
+    } else {
+      if (spotType === 'fourBet') {
+        for (const seat of order) {
+          if (seat === heroSeat) {
+            finalActions[seat] = 'DECIDING';
+          } else if (seat === villainSeat) {
+            finalActions[seat] = '3BET';
+          } else {
+            finalActions[seat] = 'FOLD';
+          }
+        }
+      } else {
+        for (const seat of order) {
+          if (seat === heroSeat) {
+            finalActions[seat] = 'DECIDING';
+            passedHero = true;
+          } else if (!passedHero) {
+            if (spotType === 'open') {
+              finalActions[seat] = 'FOLD';
+            } else {
+              finalActions[seat] = seat === villainSeat ? 'OPEN' : 'FOLD';
+            }
+          }
+        }
+      }
+    }
+    
+    seatActions = finalActions;
+    activeActionSeat = heroSeat;
+    isActionAnimating = false;
+    isAnimating = false;
+    cardFlipped = true;
   }
 
   function answer(choice: 'positive' | 'negative') {
@@ -563,17 +734,49 @@
         {/if}
       </div>
 
-      <div class="table-felt">
+      <!-- svelte-ignore a11y_click_events_have_key_events -->
+      <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+      <div 
+        class="table-felt" 
+        class:clickable={isActionAnimating}
+        on:click={skipActionSequence}
+      >
         <div class="seat-map">
           {#each quiz.seats as seat}
             <div
-              class="seat-badge {seatClass(seat)}"
+              class="seat-container"
               style={`top: ${SEAT_LAYOUT[seat].top}; left: ${SEAT_LAYOUT[seat].left};`}
             >
-              {seat}
+              <div class="seat-badge {seatClass(seat)}" class:active-turn={activeActionSeat === seat}>
+                {seat}
+                {#if seatActions[seat] && seatActions[seat] !== 'none'}
+                  <span class="seat-action-label {seatActions[seat] === '3BET' ? 'three-bet' : seatActions[seat].toLowerCase()}">{seatActions[seat]}</span>
+                {/if}
+              </div>
+
+              <!-- 席に配られたカード（Heroは表、他は裏向き） -->
+              <div class="seat-cards" class:folded={seatActions[seat] === 'FOLD'}>
+                {#if seat !== quiz.position}
+                  {#if !seatActions[seat] || seatActions[seat] === 'DECIDING' || seatActions[seat] === 'OPEN' || seatActions[seat] === '3BET'}
+                    <div class="mini-card-back"></div>
+                    <div class="mini-card-back"></div>
+                  {/if}
+                {:else}
+                  <div class="mini-card-front" class:red={isCardRed(quiz.cards[0])}>
+                    {quiz.cards[0].slice(0, -1)}
+                  </div>
+                  <div class="mini-card-front" class:red={isCardRed(quiz.cards[1])}>
+                    {quiz.cards[1].slice(0, -1)}
+                  </div>
+                {/if}
+              </div>
             </div>
           {/each}
         </div>
+
+        {#if isActionAnimating}
+          <div class="skip-hint">CLICK FELT TO SKIP</div>
+        {/if}
 
         <div class="cards-area">
           {#each quiz.cards as card, i}
@@ -862,36 +1065,183 @@
     pointer-events: none;
   }
 
-  .seat-badge {
+  .seat-container {
     position: absolute;
     transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .seat-badge {
     min-width: 52px;
     padding: 0.28rem 0.55rem;
     border-radius: 999px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.7);
+    background: rgba(0, 0, 0, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.6);
     font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.06em;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   .hero-seat {
-    background: rgba(0, 255, 204, 0.18);
-    color: #ffffff;
-    border-color: rgba(0, 255, 204, 0.35);
-    box-shadow: 0 0 0 2px rgba(0, 255, 204, 0.08);
+    background: rgba(0, 255, 204, 0.18) !important;
+    color: #ffffff !important;
+    border-color: rgba(0, 255, 204, 0.45) !important;
+    box-shadow: 0 0 10px rgba(0, 255, 204, 0.2), 0 4px 8px rgba(0, 0, 0, 0.4) !important;
   }
 
   .villain-seat {
-    background: rgba(255, 51, 102, 0.2);
-    color: #ffffff;
-    border-color: rgba(255, 51, 102, 0.35);
-    box-shadow: 0 0 0 2px rgba(255, 51, 102, 0.08);
+    background: rgba(255, 51, 102, 0.25) !important;
+    color: #ffffff !important;
+    border-color: rgba(255, 51, 102, 0.45) !important;
+    box-shadow: 0 0 10px rgba(255, 51, 102, 0.2), 0 4px 8px rgba(0, 0, 0, 0.4) !important;
   }
 
   .inactive-seat {
-    opacity: 0.72;
+    opacity: 0.45;
+  }
+
+  .active-turn {
+    border-color: var(--btn-push, #2980b9) !important;
+    box-shadow: 0 0 12px var(--btn-push, #2980b9), 0 4px 8px rgba(0, 0, 0, 0.4) !important;
+    background: rgba(41, 128, 185, 0.25) !important;
+    color: #ffffff !important;
+    transform: scale(1.08);
+  }
+
+  /* アクションラベル */
+  .seat-action-label {
+    position: absolute;
+    top: -16px;
+    font-size: 0.58rem;
+    font-weight: 800;
+    padding: 1px 5px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    animation: actionPop 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    color: #ffffff;
+    pointer-events: none;
+  }
+
+  @keyframes actionPop {
+    from { transform: scale(0.6); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .seat-action-label.fold {
+    background: #4a4a4a;
+    border: 1px solid #666666;
+    color: #bbbbbb;
+  }
+
+  .seat-action-label.open {
+    background: #27ae60;
+    border: 1px solid #2ecc71;
+    box-shadow: 0 0 8px rgba(39, 174, 96, 0.5);
+  }
+
+  .seat-action-label.three-bet {
+    background: #d35400;
+    border: 1px solid #e67e22;
+    box-shadow: 0 0 8px rgba(211, 84, 0, 0.5);
+  }
+
+  .seat-action-label.deciding {
+    background: var(--btn-push, #2980b9);
+    border: 1px solid #3498db;
+    animation: pulseDecide 0.8s infinite alternate;
+  }
+
+  @keyframes pulseDecide {
+    from { opacity: 0.85; box-shadow: 0 0 4px var(--btn-push, #2980b9); }
+    to { opacity: 1; box-shadow: 0 0 12px var(--btn-push, #2980b9); }
+  }
+
+  /* ミニカードエリア */
+  .seat-cards {
+    display: flex;
+    gap: 2px;
+    justify-content: center;
+    transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+    height: 18px;
+    pointer-events: none;
+  }
+
+  .seat-cards.folded {
+    opacity: 0;
+    transform: scale(0.7) translateY(6px);
+  }
+
+  /* ミニカード裏面 */
+  .mini-card-back {
+    width: 12px;
+    height: 17px;
+    border-radius: 2px;
+    background: var(--bg-card-back, #2e5d77);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+
+  /* ミニカード表面 */
+  .mini-card-front {
+    width: 12px;
+    height: 17px;
+    border-radius: 2px;
+    background: #ffffff;
+    border: 1px solid #cccccc;
+    color: #2c3e50;
+    font-size: 0.52rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    font-family: 'Outfit', sans-serif;
+    line-height: 1;
+  }
+
+  .mini-card-front.red {
+    color: #e74c3c;
+  }
+
+  /* スキップヒントとクリック可能 felt */
+  .table-felt.clickable {
+    cursor: pointer;
+  }
+
+  .skip-hint {
+    position: absolute;
+    bottom: 24%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.65rem;
+    font-weight: 800;
+    color: rgba(255, 255, 255, 0.35);
+    background: rgba(0, 0, 0, 0.4);
+    padding: 4px 10px;
+    border-radius: 12px;
+    letter-spacing: 1.5px;
+    pointer-events: none;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    animation: blinkHint 1.2s infinite alternate;
+  }
+
+  @keyframes blinkHint {
+    from { opacity: 0.4; }
+    to { opacity: 0.8; }
   }
 
   .cards-area {
@@ -1151,6 +1501,28 @@
       min-width: 44px;
       padding: 0.22rem 0.4rem;
       font-size: 0.58rem;
+    }
+
+    .seat-container {
+      gap: 3px;
+    }
+
+    .mini-card-back,
+    .mini-card-front {
+      width: 9px;
+      height: 13px;
+      font-size: 0.4rem;
+    }
+
+    .seat-action-label {
+      top: -12px;
+      font-size: 0.48rem;
+      padding: 1px 4px;
+    }
+
+    .skip-hint {
+      bottom: 26%;
+      font-size: 0.55rem;
     }
 
     .scoreboard {
