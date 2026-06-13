@@ -1,6 +1,6 @@
 ---
 Created: 2026-06-13
-Updated: 2026-06-13 15:47
+Updated: 2026-06-13 15:48
 ---
 
 # poker-preflop-trainer メモ帳
@@ -202,7 +202,7 @@ git push origin feature/rich-ui
 
 ---
 
-**ステータス**: 進行中
+**ステータス**: 完了
 
 [↑ index](#目次)
 
