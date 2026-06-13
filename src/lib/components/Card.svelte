@@ -111,94 +111,120 @@
     
     <!-- 表面 -->
     <div class="card-front" class:red={isRed}>
-      <!-- 左上コーナー -->
-      <div class="corner top-left">
-        <span class="rank">{rank}</span>
-        <span class="suit-mini">{suitMark(suit)}</span>
-      </div>
+      <div class="card-inner-frame">
+        <!-- 左上コーナー -->
+        <div class="corner top-left">
+          <span class="rank">{rank}</span>
+          <span class="suit-mini">{suitMark(suit)}</span>
+        </div>
 
-      <!-- メインエリア -->
-      <div class="main-area">
-        {#if layout === 'simple'}
-          <!-- 簡易レイアウト（常に中央に巨大スートが1個） -->
-          <div class="center-suit-simple {getSuitName(suit)}">
-            {suitMark(suit)}
-          </div>
-        {:else}
-          <!-- 標準レイアウト -->
-          {#if isAce}
-            {#if suit === 's'}
-              <!-- スペードAの豪華装飾ロゴ -->
-              <div class="court-graphic spade-ace">
-                <svg viewBox="0 0 100 100" class="spade-ace-svg">
-                  <path d="M50,15 C60,40 85,45 85,65 C85,82 68,82 60,75 C57,85 62,90 62,90 L38,90 C38,90 43,85 40,75 C32,82 15,82 15,65 C15,45 40,40 50,15 Z" fill="currentColor" />
-                  <path d="M50,23 C47,38 28,42 28,62 C28,72 38,74 45,67 C48,76 48,82 48,82 L52,82 C52,82 52,76 55,67 C62,74 72,72 72,62 C72,42 53,38 50,23 Z" fill="none" stroke="var(--bg-card-front, #ffffff)" stroke-width="1.5" opacity="0.9" />
-                  <circle cx="50" cy="52" r="4" fill="none" stroke="var(--bg-card-front, #ffffff)" stroke-width="1" />
-                </svg>
-              </div>
-            {:else}
-              <div class="center-suit-standard {getSuitName(suit)}">
-                {suitMark(suit)}
-              </div>
-            {/if}
-          {:else if isPipsCard}
-            <!-- 2〜10のスート配置 -->
-            <div class="pips-layout">
-              {#each getPips(rank) as pip}
-                <div class="pip {getSuitName(suit)}" class:rotate={pip.rotate} style="left: {pip.x}%; top: {pip.y}%;">
+        <!-- メインエリア -->
+        <div class="main-area">
+          {#if layout === 'simple'}
+            <!-- 簡易レイアウト（常に中央に巨大スートが1個） -->
+            <div class="center-suit-simple {getSuitName(suit)}">
+              {suitMark(suit)}
+            </div>
+          {:else}
+            <!-- 標準レイアウト -->
+            {#if isAce}
+              {#if suit === 's'}
+                <!-- スペードAの豪華装飾ロゴ -->
+                <div class="court-graphic spade-ace">
+                  <svg viewBox="0 0 100 100" class="spade-ace-svg">
+                    <path d="M50,90 C25,90 15,70 15,50 C15,30 25,10 50,10" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="1 2" opacity="0.3"/>
+                    <path d="M50,90 C75,90 85,70 85,50 C85,30 75,10 50,10" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="1 2" opacity="0.3"/>
+                    <path d="M50,15 C62,38 82,42 82,62 C82,78 68,78 60,72 C57,82 62,88 62,88 L38,88 C38,88 43,82 40,72 C32,78 18,78 18,62 C18,42 38,38 50,15 Z" fill="currentColor" />
+                    <path d="M50,23 C58,42 74,45 74,61 C74,72 64,72 58,67 C55,75 58,82 58,82 L42,82 C42,82 45,75 42,67 C36,72 26,72 26,61 C26,45 42,42 50,23 Z" fill="none" stroke="var(--bg-card-front, #ffffff)" stroke-width="1.2" opacity="0.85" />
+                    <circle cx="50" cy="53" r="3.5" fill="none" stroke="var(--bg-card-front, #ffffff)" stroke-width="0.75" />
+                  </svg>
+                </div>
+              {:else}
+                <div class="center-suit-standard {getSuitName(suit)}">
                   {suitMark(suit)}
                 </div>
-              {/each}
-            </div>
-          {:else if isCourtCard}
-            <!-- 絵札 J, Q, K の肖像画 -->
-            <div class="court-graphic card-{rank}">
-              <div class="court-border">
-                <svg viewBox="0 0 60 90" class="court-svg">
-                  <rect x="2" y="2" width="56" height="86" rx="4" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="1 1" opacity="0.3" />
-                  <line x1="2" y1="45" x2="58" y2="45" stroke="currentColor" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.3" />
-                  
-                  {#if rank === 'K'}
-                    <g transform="translate(0, 0)">
-                      <path d="M18,35 L42,35 L40,15 L34,23 L30,12 L26,23 L20,15 Z" fill="currentColor" opacity="0.85" />
-                      <circle cx="30" cy="28" r="3" fill="none" stroke="var(--bg-card-front)" stroke-width="1" />
-                    </g>
-                    <g transform="translate(60, 90) rotate(180)">
-                      <path d="M18,35 L42,35 L40,15 L34,23 L30,12 L26,23 L20,15 Z" fill="currentColor" opacity="0.85" />
-                      <circle cx="30" cy="28" r="3" fill="none" stroke="var(--bg-card-front)" stroke-width="1" />
-                    </g>
-                  {:else if rank === 'Q'}
-                    <g transform="translate(0, 0)">
-                      <path d="M22,35 C22,20 38,20 38,35 Z" fill="currentColor" opacity="0.85" />
-                      <path d="M24,20 L36,20 L33,26 L30,16 L27,26 Z" fill="currentColor" />
-                    </g>
-                    <g transform="translate(60, 90) rotate(180)">
-                      <path d="M22,35 C22,20 38,20 38,35 Z" fill="currentColor" opacity="0.85" />
-                      <path d="M24,20 L36,20 L33,26 L30,16 L27,26 Z" fill="currentColor" />
-                    </g>
-                  {:else if rank === 'J'}
-                    <g transform="translate(0, 0)">
-                      <path d="M20,35 L40,35 C40,25 35,15 25,18 Z" fill="currentColor" opacity="0.85" />
-                      <path d="M16,14 C22,12 35,16 35,26" fill="none" stroke="currentColor" stroke-width="2" />
-                    </g>
-                    <g transform="translate(60, 90) rotate(180)">
-                      <path d="M20,35 L40,35 C40,25 35,15 25,18 Z" fill="currentColor" opacity="0.85" />
-                      <path d="M16,14 C22,12 35,16 35,26" fill="none" stroke="currentColor" stroke-width="2" />
-                    </g>
-                  {/if}
-                </svg>
-                <span class="court-suit top-l">{suitMark(suit)}</span>
-                <span class="court-suit bottom-r">{suitMark(suit)}</span>
+              {/if}
+            {:else if isPipsCard}
+              <!-- 2〜10のスート配置 -->
+              <div class="pips-layout">
+                {#each getPips(rank) as pip}
+                  <div class="pip {getSuitName(suit)}" class:rotate={pip.rotate} style="left: {pip.x}%; top: {pip.y}%;">
+                    {suitMark(suit)}
+                  </div>
+                {/each}
               </div>
-            </div>
+            {:else if isCourtCard}
+              <!-- 絵札 J, Q, K の肖像画 -->
+              <div class="court-graphic card-{rank}">
+                <div class="court-border">
+                  {#if rank === 'K'}
+                    <svg viewBox="0 0 60 90" class="court-svg">
+                      <circle cx="30" cy="45" r="18" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.25"/>
+                      <g transform="translate(0, 0)">
+                        <path d="M22,12 L38,12 L35,22 L30,17 L25,22 Z" fill="currentColor" />
+                        <path d="M20,22 C20,22 23,28 30,28 C37,28 40,22 40,22 L36,36 L24,36 Z" fill="none" stroke="currentColor" stroke-width="1.2" />
+                        <line x1="30" y1="26" x2="30" y2="40" stroke="currentColor" stroke-width="1.5" />
+                        <line x1="27" y1="29" x2="33" y2="29" stroke="currentColor" stroke-width="1.5" />
+                        <path d="M24,36 L15,45 L45,45 L36,36" fill="none" stroke="currentColor" stroke-width="1" opacity="0.8"/>
+                      </g>
+                      <g transform="translate(60, 90) rotate(180)">
+                        <path d="M22,12 L38,12 L35,22 L30,17 L25,22 Z" fill="currentColor" />
+                        <path d="M20,22 C20,22 23,28 30,28 C37,28 40,22 40,22 L36,36 L24,36 Z" fill="none" stroke="currentColor" stroke-width="1.2" />
+                        <line x1="30" y1="26" x2="30" y2="40" stroke="currentColor" stroke-width="1.5" />
+                        <line x1="27" y1="29" x2="33" y2="29" stroke="currentColor" stroke-width="1.5" />
+                        <path d="M24,36 L15,45 L45,45 L36,36" fill="none" stroke="currentColor" stroke-width="1" opacity="0.8"/>
+                      </g>
+                    </svg>
+                  {:else if rank === 'Q'}
+                    <svg viewBox="0 0 60 90" class="court-svg">
+                      <circle cx="30" cy="45" r="18" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.25"/>
+                      <g transform="translate(0, 0)">
+                        <path d="M25,14 L35,14 L33,20 L30,16 L27,20 Z" fill="currentColor" />
+                        <path d="M22,20 C22,20 22,26 30,26 C38,26 38,20 38,20 L35,36 L25,36 Z" fill="none" stroke="currentColor" stroke-width="1.2" />
+                        <circle cx="30" cy="31" r="3" fill="none" stroke="currentColor" stroke-width="1.2" />
+                        <path d="M28,31 C28,29 32,29 32,31 C32,33 28,33 28,31 Z" fill="currentColor" opacity="0.8"/>
+                        <path d="M25,36 C18,41 18,45 18,45 L42,45 C42,45 42,41 35,36 Z" fill="none" stroke="currentColor" stroke-width="1" opacity="0.8"/>
+                      </g>
+                      <g transform="translate(60, 90) rotate(180)">
+                        <path d="M25,14 L35,14 L33,20 L30,16 L27,20 Z" fill="currentColor" />
+                        <path d="M22,20 C22,20 22,26 30,26 C38,26 38,20 38,20 L35,36 L25,36 Z" fill="none" stroke="currentColor" stroke-width="1.2" />
+                        <circle cx="30" cy="31" r="3" fill="none" stroke="currentColor" stroke-width="1.2" />
+                        <path d="M28,31 C28,29 32,29 32,31 C32,33 28,33 28,31 Z" fill="currentColor" opacity="0.8"/>
+                        <path d="M25,36 C18,41 18,45 18,45 L42,45 C42,45 42,41 35,36 Z" fill="none" stroke="currentColor" stroke-width="1" opacity="0.8"/>
+                      </g>
+                    </svg>
+                  {:else if rank === 'J'}
+                    <svg viewBox="0 0 60 90" class="court-svg">
+                      <circle cx="30" cy="45" r="18" fill="none" stroke="currentColor" stroke-width="0.5" stroke-dasharray="2 2" opacity="0.25"/>
+                      <g transform="translate(0, 0)">
+                        <path d="M24,15 C24,15 30,8 36,15 L33,21 L27,21 Z" fill="currentColor" />
+                        <path d="M23,21 C23,21 24,27 30,27 C36,27 37,21 37,21 L34,36 L26,36 Z" fill="none" stroke="currentColor" stroke-width="1.2" />
+                        <path d="M19,25 L21,20 L23,25 L21,30 Z" fill="currentColor"/>
+                        <line x1="21" y1="30" x2="21" y2="45" stroke="currentColor" stroke-width="1.2"/>
+                        <path d="M26,36 L17,45 L43,45 L34,36 Z" fill="none" stroke="currentColor" stroke-width="1" opacity="0.8"/>
+                      </g>
+                      <g transform="translate(60, 90) rotate(180)">
+                        <path d="M24,15 C24,15 30,8 36,15 L33,21 L27,21 Z" fill="currentColor" />
+                        <path d="M23,21 C23,21 24,27 30,27 C36,27 37,21 37,21 L34,36 L26,36 Z" fill="none" stroke="currentColor" stroke-width="1.2" />
+                        <path d="M19,25 L21,20 L23,25 L21,30 Z" fill="currentColor"/>
+                        <line x1="21" y1="30" x2="21" y2="45" stroke="currentColor" stroke-width="1.2"/>
+                        <path d="M26,36 L17,45 L43,45 L34,36 Z" fill="none" stroke="currentColor" stroke-width="1" opacity="0.8"/>
+                      </g>
+                    </svg>
+                  {/if}
+                  <span class="court-suit top-l">{suitMark(suit)}</span>
+                  <span class="court-suit bottom-r">{suitMark(suit)}</span>
+                </div>
+              </div>
+            {/if}
           {/if}
-        {/if}
-      </div>
+        </div>
 
-      <!-- 右下コーナー -->
-      <div class="corner bottom-right">
-        <span class="rank">{rank}</span>
-        <span class="suit-mini">{suitMark(suit)}</span>
+        <!-- 右下コーナー -->
+        <div class="corner bottom-right">
+          <span class="rank">{rank}</span>
+          <span class="suit-mini">{suitMark(suit)}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -237,22 +263,62 @@
     backface-visibility: hidden;
     border-radius: 12px;
     box-sizing: border-box;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .card-back {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 6px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
   }
 
   /* 表面のスタイル */
   .card-front {
     background: var(--bg-card-front, #ffffff);
     color: var(--suit-black, #2c3e50);
-    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.02), inset 0 0 0 4px rgba(0, 0, 0, 0.01);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+    padding: 0;
+    
+    /* 高級リネンフィニッシュ（格子エンボステクスチャ） */
+    background-image: 
+      radial-gradient(circle at 50% 50%, transparent 60%, rgba(0, 0, 0, 0.02) 100%),
+      repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.012) 0px, rgba(0, 0, 0, 0.012) 1px, transparent 1px, transparent 2px),
+      repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.012) 0px, rgba(0, 0, 0, 0.012) 1px, transparent 1px, transparent 2px);
+    background-blend-mode: multiply;
   }
 
   .card-front.red {
     color: var(--suit-red, #e74c3c);
+  }
+
+  /* インナーフレーム (飾り枠) */
+  .card-inner-frame {
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 5px;
+    box-sizing: border-box;
+    position: relative;
+  }
+
+  /* スキン切り替え時の枠カラー */
+  :global([style*="neon-cyber"]) .card-inner-frame {
+    border-color: rgba(255, 0, 127, 0.3);
+    box-shadow: inset 0 0 5px rgba(255, 0, 127, 0.15);
+  }
+
+  :global([style*="royal-gold"]) .card-inner-frame {
+    border-color: rgba(184, 151, 66, 0.45);
+    box-shadow: inset 0 0 5px rgba(184, 151, 66, 0.2);
+  }
+
+  :global([style*="vintage-classic"]) .card-inner-frame {
+    border-color: rgba(140, 37, 48, 0.25);
   }
 
   /* 裏面のスタイル */
@@ -312,8 +378,14 @@
   }
 
   .rank {
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     font-weight: 800;
+    font-family: 'Cinzel', 'Playfair Display', 'Georgia', serif;
+    line-height: 0.9;
+  }
+
+  /* ネオン・サイバースキンではシャープなフォントを維持 */
+  :global([style*="neon-cyber"]) .rank {
     font-family: 'Outfit', 'Inter', sans-serif;
   }
 
@@ -395,13 +467,34 @@
 
   /* 絵札の肖像画 */
   .court-graphic {
-    width: 56px;
-    height: 84px;
+    width: 54px;
+    height: 80px;
     position: relative;
-    box-shadow: inset 0 0 6px rgba(0,0,0,0.05);
-    background: rgba(255, 255, 255, 0.2);
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.08);
+    background: rgba(0, 0, 0, 0.02);
     border-radius: 4px;
     border: 1px solid rgba(0,0,0,0.08);
+    overflow: hidden;
+  }
+
+  /* サイバースキンの時の絵札の背景と枠 */
+  :global([style*="neon-cyber"]) .court-graphic {
+    border-color: rgba(0, 240, 255, 0.25);
+    background: rgba(255, 255, 255, 0.02);
+    box-shadow: inset 0 0 6px rgba(0, 240, 255, 0.1);
+  }
+
+  /* ゴールドスキンの時の絵札の背景と枠 */
+  :global([style*="royal-gold"]) .court-graphic {
+    border-color: rgba(184, 151, 66, 0.35);
+    background: rgba(184, 151, 66, 0.03);
+    box-shadow: inset 0 0 8px rgba(184, 151, 66, 0.1);
+  }
+
+  /* ヴィンテージスキンの時の絵札 */
+  :global([style*="vintage-classic"]) .court-graphic {
+    border-color: rgba(140, 37, 48, 0.15);
+    background: rgba(140, 37, 48, 0.02);
   }
 
   .court-border {
