@@ -1,0 +1,55 @@
+{
+  "skins": [
+    {
+      "id": "classic-dark",
+      "name": "クラシック・ダーク",
+      "colors": {
+        "bg-table": "radial-gradient(circle at center, #1e5631 0%, #0d3b1e 100%)",
+        "bg-card-front": "#ffffff",
+        "bg-card-back": "repeating-linear-gradient(45deg, #1b3a4b, #1b3a4b 8px, #2e5d77 8px, #2e5d77 16px)",
+        "card-shadow": "0 8px 16px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.2)",
+        "suit-red": "#e74c3c",
+        "suit-black": "#2c3e50",
+        "text-primary": "#f5f5f5",
+        "panel-bg": "rgba(0, 0, 0, 0.3)",
+        "panel-border": "1px solid rgba(255, 255, 255, 0.1)",
+        "btn-push": "#2980b9",
+        "btn-fold": "#7f8c8d"
+      }
+    },
+    {
+      "id": "neon-cyber",
+      "name": "ネオン・サイバー",
+      "colors": {
+        "bg-table": "radial-gradient(circle at center, #0b071a 0%, #030107 100%)",
+        "bg-card-front": "#151525",
+        "bg-card-back": "repeating-linear-gradient(-45deg, #ff007f, #ff007f 4px, #00f0ff 4px, #00f0ff 8px)",
+        "card-shadow": "0 0 15px rgba(0, 240, 255, 0.5)",
+        "suit-red": "#ff007f",
+        "suit-black": "#00f0ff",
+        "text-primary": "#00f0ff",
+        "panel-bg": "rgba(21, 21, 37, 0.7)",
+        "panel-border": "1px solid #ff007f",
+        "btn-push": "#00ffcc",
+        "btn-fold": "#ff0055"
+      }
+    },
+    {
+      "id": "royal-gold",
+      "name": "ロイヤル・ゴールド",
+      "colors": {
+        "bg-table": "radial-gradient(circle at center, #4a0e17 0%, #1f0307 100%)",
+        "bg-card-front": "#fdfdfd",
+        "bg-card-back": "linear-gradient(135deg, #b89742 0%, #f7e5a9 50%, #b89742 100%)",
+        "card-shadow": "0 8px 20px rgba(184, 151, 66, 0.3)",
+        "suit-red": "#d35400",
+        "suit-black": "#2c3e50",
+        "text-primary": "#f7e5a9",
+        "panel-bg": "rgba(26, 4, 7, 0.6)",
+        "panel-border": "1px solid #b89742",
+        "btn-push": "#d4af37",
+        "btn-fold": "#555555"
+      }
+    }
+  ]
+}

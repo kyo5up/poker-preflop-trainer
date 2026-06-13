@@ -1,6 +1,6 @@
 ---
 Created: 2026-06-13
-Updated: 2026-06-13 14:52
+Updated: 2026-06-13 15:47
 ---
 
 # SCHEME_SCHEMA.md — スキーム & スキーマ
@@ -18,13 +18,42 @@ Updated: 2026-06-13 14:52
 
 ## 前段: スキーム（設計方針）
 
-<!-- 設計方針・命名規則・アーキテクチャ上の意思決定をここに記載 -->
+### スキン（テーマ）の動的切り替え
+- 将来のガチャや機能解放によるデザイン差し替えに対応するため、トランプカードやテーブル（背景）、操作パネル、ボタン等の配色を「スキン」として外部JSONで管理する。
+- 選択されたスキンの配色パラメータを、ルート要素（`html` や `main`）の CSS変数（カスタムプロパティ）にバインドする。
+- コンポーネント側（`Card.svelte` 等）は、個別の色指定をハードコードせず、すべて `--card-bg-front` などの CSS変数 を参照して描画する。
 
 ---
 
 ## 後段: スキーマ（フィールド定義）
 
-<!-- フィールド定義・データ構造・値の形式をここに記載 -->
+### `src/data/skins.json` のスキーマ
+
+スキンの一覧を定義するJSONファイル。
+
+```json
+{
+  "skins": [
+    {
+      "id": "string",          // スキンのユニークID（例: "classic-dark", "neon-cyber"）
+      "name": "string",        // 表示用スキン名（例: "クラシック・ダーク"）
+      "colors": {
+        "bg-table": "string",       // テーブル背景（グラデーションや単色）
+        "bg-card-front": "string",  // カード表面の背景
+        "bg-card-back": "string",   // カード裏面の背景
+        "card-shadow": "string",    // カードの影（box-shadow）
+        "suit-red": "string",       // 赤系スート（♥♦）の色
+        "suit-black": "string",     // 黒系スート（♠♣）の色
+        "text-primary": "string",   // メインのテキスト色
+        "panel-bg": "string",       // 操作パネル背景色
+        "panel-border": "string",   // 操作パネル枠線
+        "btn-push": "string",       // PUSHボタン色
+        "btn-fold": "string"        // FOLDボタン色
+      }
+    }
+  ]
+}
+```
 
 ---
 
